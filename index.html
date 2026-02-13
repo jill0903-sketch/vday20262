@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Last Valentine as Fiancés 💍</title>
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --bg-color: #fff0f3;
+        }
+
+        /* Stops all scrolling and keeps everything in place */
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: var(--bg-color);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.3);
+            font-size: 20px;
+            animation: move 6s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes move {
+            0% { transform: translateY(110vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+
+        /* Main Card - perfectly centered */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            text-align: center;
+            width: 85%;
+            max-width: 350px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 { color: #c9184a; font-size: 1.3rem; margin: 0 0 15px 0; line-height: 1.3; }
+
+        .img-wrap {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .img-wrap img { width: 100%; display: block; object-fit: cover; }
+
+        /* Contained Button Area */
+        .btn-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            height: 100px; /* Limits how far Yes can grow */
+            position: relative;
+            overflow: visible;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #yesBtn { background: var(--primary-pink); color: white; z-index: 100; }
+        #noBtn { background: #e9ecef; color: #6c757d; position: absolute; z-index: 50; }
+
+        .hidden { display: none; }
+        
+        .success-content h2 { color: #ff4d6d; font-size: 1.5rem; margin: 0 0 10px 0; }
+        .success-content p { color: #590d22; font-size: 0.9rem; margin: 5px 0; }
+
+        .date-text {
+            background: #ffb3c1;
+            padding: 8px 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+            color: #a4133c;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="heartBg"></div>
+
+    <div class="container">
+        <div id="ask">
+            <h1>Will you be my last Valentine as fiancés? 💍💖</h1>
+            <div class="img-wrap">
+                <img src="main.jpg" alt="Us">
+            </div>
+            <div class="btn-box" id="btnArea">
+                <button class="btn" id="yesBtn" onclick="celebrate()">YES!</button>
+                <button class="btn" id="noBtn" onmouseover="dodge()" onclick="dodge()">No</button>
+            </div>
+        </div>
+
+        <div id="success" class="hidden">
+            <div class="success-content">
+                <h2>I love you till infinity 🥰</h2>
+                <div class="img-wrap">
+                    <img src="success.jpg" alt="Us Together">
+                </div>
+                <p>I can't wait to spend forever with you.</p>
+                <div class="date-text">See you on the 15th! 📅✨</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate falling hearts
+        function createHearts() {
+            const bg = document.getElementById('heartBg');
+            for(let i=0; i<15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                bg.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const area = document.getElementById('btnArea');
+        let scale = 1;
+
+        function dodge() {
+            // Keep "No" inside the small button area only
+            const maxX = area.clientWidth - noBtn.clientWidth;
+            const maxY = area.clientHeight - noBtn.clientHeight;
+            
+            const x = Math.floor(Math.random() * maxX);
+            const y = Math.floor(Math.random() * maxY);
+
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // Make Yes grow without breaking the layout
+            scale += 0.15;
+            if(scale < 2.5) { // Prevent it from getting TOO huge
+                yesBtn.style.transform = `scale(${scale})`;
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('ask').classList.add('hidden');
+            document.getElementById('success').classList.remove('hidden');
+            document.body.style.background = "#ffb3c1";
+        }
+    </script>
+</body>
+</html>
